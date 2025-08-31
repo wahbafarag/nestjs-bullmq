@@ -25,6 +25,6 @@
 
 ## Description
 
-### That's a simple project to demonstrate how to use NestJS with BullMQ and Redis.
+### NestJS with BullMQ and Redis.
 
 ### This project is a simple task queue that allows you to add tasks to a queue and process them in the background.

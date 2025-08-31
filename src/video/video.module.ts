@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { VideoController } from './video.controller';
 import { BullModule } from '@nestjs/bullmq';
 import { VideoWorker } from './video.worker';
+import { VideoQueueEventsListener } from './video-queue.event';
 
 @Module({
   imports: [
@@ -34,6 +35,6 @@ import { VideoWorker } from './video.worker';
   ],
 
   controllers: [VideoController],
-  providers: [VideoWorker],
+  providers: [VideoWorker, VideoQueueEventsListener],
 })
 export class VideoModule {}

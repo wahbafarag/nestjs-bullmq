@@ -21,4 +21,18 @@ export class VideoController {
     );
     return { message: 'Video processed successfully' };
   }
+
+  @Post('compress')
+  async compressVideo() {
+    await this.videoQueue.add(
+      'video-compression-job',
+      {
+        videoId: '67890',
+        videoName: 'large-video.mp4',
+        videoPath: '/path/to/large-video.mp4',
+        videoType: 'mp4',
+      }, // job data
+    );
+    return { message: 'Video compression job added successfully' };
+  }
 }

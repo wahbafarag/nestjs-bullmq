@@ -8,18 +8,33 @@ export class VideoWorker extends WorkerHost {
   async process(job: Job) {
     const totalSteps = 5;
 
-    for (let step = 1; step <= totalSteps; step++) {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+    // this is how we handle multiple job types in a single worker
+    switch (job.name) {
+      case 'video-processing-job':
+        console.log('Processing video job:', job.data);
+        await this.simulateLongRunningTask(job, totalSteps);
+        break;
 
-      const progress = Math.round((step / totalSteps) * 100);
+      case 'video-compression-job':
+        console.log('Compressing video job:', job.data);
+        await this.simulateLongRunningTask(job, totalSteps);
+        break;
 
-      await job.updateProgress(progress);
-
-      console.log(`Job ${job.id} progress: ${progress}%`);
+      default:
+        console.log('Unknown job type:', job.name);
+        throw new Error('Unknown job type');
     }
 
     // Simulate a failure for demonstration purposes
     // throw new Error('Simulated job failure');
+  }
+
+  async simulateLongRunningTask(job: Job, totalSteps: number) {
+    for (let step = 1; step <= totalSteps; step++) {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const progress = Math.round((step / totalSteps) * 100);
+      await job.updateProgress(progress); // update job progress
+    }
   }
 
   // adding event listeners for worker events

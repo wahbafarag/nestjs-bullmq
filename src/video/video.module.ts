@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { VideoController } from './video.controller';
 import { BullModule } from '@nestjs/bullmq';
+import { VideoWorker } from './video.worker';
 
 @Module({
   imports: [
@@ -21,6 +22,9 @@ import { BullModule } from '@nestjs/bullmq';
       },
       defaultJobOptions: {
         attempts: 3,
+        removeOnComplete: 1000,
+        removeOnFail: 3000,
+        backoff: 2000, // after failure, wait 2 seconds before retrying
       },
     }),
 
@@ -30,5 +34,6 @@ import { BullModule } from '@nestjs/bullmq';
   ],
 
   controllers: [VideoController],
+  providers: [VideoWorker],
 })
 export class VideoModule {}

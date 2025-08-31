@@ -2,7 +2,7 @@ import { OnWorkerEvent, Processor, WorkerHost } from '@nestjs/bullmq';
 import { Job } from 'bullmq';
 
 @Processor('my-bull-queue', {
-  concurrency: 2, // number of concurrent jobs to process
+  concurrency: 1, // number of concurrent jobs to process
 }) // queue name
 export class VideoWorker extends WorkerHost {
   async process(job: Job) {
